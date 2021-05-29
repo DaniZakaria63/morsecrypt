@@ -2,7 +2,16 @@ exports.cekKapital = async(str)=>{
     return !/[a-z]/.test(str) && /[A-Z]/.test(str);
 }
 
+const cekHurufKapital = async(str)=>{
+    return !/[a-z]/.test(str) && /[A-Z]/.test(str);
+}
 exports.encodeMorse = async(kalimat)=>{
+    //Checking
+    if(!kalimat) return [{KIND:'Parameter Tidak Lengkap'},null];
+    if(kalimat.includes(" ")) return [{KIND:'Tidak Boleh Ada Spasi'},null];
+    if(/\d/.test(kalimat)) return [{KIND:'Tidak Boleh Berupa Nomor'},null];
+    if(await cekHurufKapital(kalimat))return [{KIND:'Tidak Boleh Huruf Kapital'},null];
+
     let hasil = '';
     const karakter = 'abcdefghijklmnopqrstuvwxyz'.split('');
     const karakterKapital = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
@@ -31,7 +40,12 @@ exports.encodeMorse = async(kalimat)=>{
 }
 
 exports.decodeMorse = async(kalimat)=>{
-    if(!kalimat) return [{KIND:'UNESCAPED_STRING'},null];
+    //Checking
+    if(!kalimat) return [{KIND:'Parameter Tidak Lengkap'},null];
+    if(kalimat.includes(" ")) return [{KIND:'Tidak Boleh Ada Spasi'},null];
+    if(/\d/.test(kalimat)) return [{KIND:'Tidak Boleh Berupa Nomor'},null];
+    if(await cekHurufKapital(kalimat))return [{KIND:'Tidak Boleh Huruf Kapital'},null];
+    
     let hasil = '';
     const karakter = 'abcdefghijklmnopqrstuvwxyz'.split('');
     const morse = ['.-','-...','-.-.','-..','.','..-.','--.','....','..','.--','-.-','.-..','--','-.','---','.--.','--.-','.-.','...','-','..-','...-','.--','-..-','-.--','--..'];
